@@ -7,9 +7,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Serialization
 {
-   
+  
+
     [Serializable()]
-    public class Person : ISerializable
+    public class Person : ISerializable, IDeserializationCallback
     {
         public int age { get; set; }
         private string Name { get; set; }
@@ -25,8 +26,14 @@ namespace Serialization
             this.Name = name;
             this.BirthDate = birthDate;
             this.Gender = gender;
+            CalculateAge();
         }
-     
+
+        private void CalculateAge()
+        {
+            age = (DateTime.Today).Year - BirthDate.Year;
+        }
+        /*
         public int Age {
             get { DateTime today = DateTime.Now;
                 age = today.Year - BirthDate.Year;
@@ -37,11 +44,11 @@ namespace Serialization
                 return age;
             }
         }
-
+        */
 
         public override string ToString()
         {
-            return string.Format("Name: {0}; Birthday: {1}; Age: {2}; Gender: {3}", Name, BirthDate, Age, Gender); 
+            return string.Format("Name: {0}; Birthday: {1}; Age: {2}; Gender: {3}", Name, BirthDate, age, Gender); 
         }
 
         public void Serialize(string output)
@@ -89,6 +96,11 @@ namespace Serialization
             Console.WriteLine(ToString());
             stream.Close();
 
+        }
+
+        public void OnDeserialization(object sender)
+        {
+            age = (DateTime.Today).Year - BirthDate.Year;
         }
     }
     public enum Gender
