@@ -7,8 +7,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Serialization
 {
-    //source:http://www.newthinktank.com/2017/03/c-tutorial-18/
-    [Serializable]
+   
+    [Serializable()]
     public class Person : ISerializable
     {
         public int age { get; set; }
@@ -41,7 +41,7 @@ namespace Serialization
 
         public override string ToString()
         {
-            return "Name:" + Name + " Birthday: " + Age + " Gender: " + Gender + " Bday: " + BirthDate.ToString("MMMM dd, yyyy");
+            return string.Format("Name: {0}; Birthday: {1}; Age: {2}; Gender: {3}", Name, BirthDate, Age, Gender); 
         }
 
         public void Serialize(string output)
